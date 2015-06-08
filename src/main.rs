@@ -1,9 +1,20 @@
+#![feature(collections)]
+#![feature(plugin)]
 #![feature(std_misc)]
 
 use std::io::{BufReader, BufRead, Result, Write};
 use std::net::{self, TcpListener, TcpStream};
 use std::thread;
 use std::sync::mpsc;
+
+mod message;
+
+
+/// An irc client
+struct Client {
+    id: u32,
+    channel: mpsc::Sender<message::IrcMessage>,
+}
 
 
 fn main() {
