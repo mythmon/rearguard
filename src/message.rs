@@ -4,11 +4,12 @@ use std::str::FromStr;
 
 /// Messages to pass to and from client handlers
 #[derive(Debug)]
+#[derive(Clone)]
 pub struct IrcMessage {
-    prefix: Option<String>,
-    command: String,
-    params: Vec<String>,
-    trail: Option<String>,
+    pub prefix: Option<String>,
+    pub command: String,
+    pub params: Vec<String>,
+    pub trail: Option<String>,
 }
 
 impl IrcMessage {
@@ -59,7 +60,7 @@ impl FromStr for IrcMessage {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let words: Vec<&str> = s.split(" ").collect();
+        let words: Vec<&str> = s.trim_right_matches("\r").split(" ").collect();
         let mut i = 0;
 
         let prefix = if words[i].slice_chars(0, 1) == ":" {
